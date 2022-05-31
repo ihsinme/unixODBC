@@ -354,8 +354,8 @@ OptimalDisplayWidth( SQLHSTMT hStmt, SQLINTEGER nCol, int nUserWidth )
 static int OpenDatabase( SQLHENV *phEnv, SQLHDBC *phDbc, char *szDSN, char *szUID, char *szPWD )
 {
     SQLCHAR dsn[ 1024 ], uid[ 1024 ], pwd[ 1024 ];
-    SQLTCHAR cstr[ 1024 ];
-    char zcstr[ 1024 ], tmp[ 1024 ];
+    SQLTCHAR cstr[ 3084 ];
+    char zcstr[ 3084 ], tmp[ 1024 ];
     int i;
     size_t zclen;
 
@@ -376,6 +376,11 @@ static int OpenDatabase( SQLHENV *phEnv, SQLHDBC *phDbc, char *szDSN, char *szUI
     if ( szDSN )
     {
         size_t DSNlen=strlen( szDSN );
+        if ( DSNlen > 1018 )
+        {
+            fprintf( stderr, "[ISQL]ERROR: Very long argument\n" );
+            return 0;
+        }
         for ( i = 0; i < DSNlen; i ++ )
         {
             dsn[ i ] = szDSN[ i ];
@@ -390,6 +395,11 @@ static int OpenDatabase( SQLHENV *phEnv, SQLHDBC *phDbc, char *szDSN, char *szUI
     if ( szUID )
     {
         size_t UIDlen=strlen( szUID );
+        if ( UIDlen > 1018 )
+        {
+            fprintf( stderr, "[ISQL]ERROR: Very long argument\n" );
+            return 0;
+        }
         for ( i = 0; i < UIDlen; i ++ )
         {
             uid[ i ] = szUID[ i ];
@@ -404,6 +414,11 @@ static int OpenDatabase( SQLHENV *phEnv, SQLHDBC *phDbc, char *szDSN, char *szUI
     if ( szPWD )
     {
         size_t PWDlen=strlen( szPWD );
+        if ( PWDlen > 1018 )
+        {
+            fprintf( stderr, "[ISQL]ERROR: Very long argument\n" );
+            return 0;
+        }
         for ( i = 0; i < PWDlen; i ++ )
         {
             pwd[ i ] = szPWD[ i ];
